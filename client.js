@@ -27,9 +27,20 @@ class mainServerClient{
 		this.serverUrl = serverUrl,
 		this.httpErrorHandler = httpErrorHandler,
 		this.accounts = new mainServerClientAccountModule(this)
+		this.firmware = new mainServerClientFirmwareModule(this)
+		this.identity = new mainServerClientIdentityModule(this)
+		this.subServer = new mainServerClientSubServerModule(this)
+		this.subServerDevices = new mainServerClientSubServerDevicesModule(this)
+		this.subServerDevicesPeripheral = new mainServerClientSubServerDevicesPeripheralModule(this)
+		this.subServerReactor = new mainServerClientSubServerReactorModule(this)
+		this.subServerReport = new mainServerClientSubServerReportModule(this)
+		this.subServerSession = new mainServerClientSubServerSessionModule(this)
+		this.subServerUserAccess = new mainServerClientSubServerUserAccessModule(this)
+		this.userNotifications = new mainServerClientUserNotificationsModule(this)
+		this.userPermissions = new mainServerClientUserPermissionsModule(this)
 	}
 
-	let isLoggedIn = false
+	//let isLoggedIn = false
 
 	composeUrl(endPoint){
 		return `${this.serverUrl}/${endPoint}`
