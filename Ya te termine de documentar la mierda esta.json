@@ -1,0 +1,4055 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Acuaponia Main Server User API - V1",
+    "version": "v1",
+    "x-company": "GLV Softworks",
+    "x-contact": "dagarciam1014@gmail.com"
+  },
+  "paths": {
+    "/api/app/accounts": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "GetUserInfo -\r\nGets the information of the currently logged in user",
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "DeleteUser -\r\nConfirms and executes the deletion of the user represented in the command token token",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/app/accounts/{userKey}": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "GetUserInfo -\r\nGets the information of the user associated with userKey",
+        "parameters": [
+          {
+            "name": "userKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "UpdateUser-\r\nUpdates the information of the user associated with userKey",
+        "description": "This action doesn't check for permissions in case the requesting user is the bearer of userKey",
+        "parameters": [
+          {
+            "name": "userKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaUserModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaUserModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaUserModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaUserModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaUserView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/accounts/{userToDeleteId}": {
+      "delete": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "RequestDelete -\r\nObtains a command token for the deletion of the user associated with userToDeleteId",
+        "description": "The received token is to then be passed to DELETE: api/app/accounts?token={TOKEN}\r\nThe received token has an expiration time of 30 seconds, and is valid only after 10 seconds has elapsed. Leaving a Window of 20 seconds to delete the user",
+        "parameters": [
+          {
+            "name": "userToDeleteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/accounts/password": {
+      "patch": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "ChangePassword -\r\nChanges the password of the requesting user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeAcuaponiaUserPasswordModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeAcuaponiaUserPasswordModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeAcuaponiaUserPasswordModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeAcuaponiaUserPasswordModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/app/firmwares/{firmwareId}/bin": {
+      "get": {
+        "tags": [
+          "Firmware"
+        ],
+        "summary": "DownloadFirmwareBinary -\r\nDownloads the binary file of the firmware associated with firmwareId",
+        "parameters": [
+          {
+            "name": "firmwareId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Firmware"
+        ],
+        "summary": "UploadFirmwareBinary - \r\nUploads binary files to the firmware associated with firmwareId and updates the latest version of it to version if provided",
+        "parameters": [
+          {
+            "name": "firmwareId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/app/firmwares": {
+      "get": {
+        "tags": [
+          "Firmware"
+        ],
+        "summary": "GetAllFirmwares - \r\nObtains all firmware information the user has access to",
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Firmware"
+        ],
+        "summary": "CreateFirmwareInfo - \r\nCreates information for a new Firmware that may have a binary file associated with it",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFirmwareDataModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFirmwareDataModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFirmwareDataModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFirmwareDataModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Firmware"
+        ],
+        "summary": "DeleteFirmwareInfo - \r\nConfirms and executes the deletion of the firmware represented in the command token token",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/app/firmwares/{firmwareId}": {
+      "get": {
+        "tags": [
+          "Firmware"
+        ],
+        "summary": "GetFirmwareInfo -\r\nObtains the firmware information of the firmware associated with firmwareId",
+        "parameters": [
+          {
+            "name": "firmwareId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Firmware"
+        ],
+        "summary": "UpdateFirmwareInfo - \r\nUpdates the information of the firmware associated with firmwareId",
+        "parameters": [
+          {
+            "name": "firmwareId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFirmwareDataModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFirmwareDataModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFirmwareDataModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFirmwareDataModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareDataView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Firmware"
+        ],
+        "summary": "DeleteFirmwareInfo - \r\nObtains a command token for the deletion of the firmware associated with firmwareId",
+        "description": "The received token is to then be passed to DELETE: api/app/firmwares?token={TOKEN}\r\nThe received token has an expiration time of 15 seconds",
+        "parameters": [
+          {
+            "name": "firmwareId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/identity": {
+      "post": {
+        "tags": [
+          "Identity"
+        ],
+        "summary": "CreateAccount - \r\nCreates a new user account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaUserModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaUserModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaUserModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaUserModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Identity"
+        ],
+        "summary": "Login - \r\nLogins as the user represented in userLogin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginAcuaponiaUserModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginAcuaponiaUserModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginAcuaponiaUserModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginAcuaponiaUserModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Identity"
+        ],
+        "summary": "Logout - \r\nLogs out the current user",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/app/subservers": {
+      "get": {
+        "tags": [
+          "SubServer"
+        ],
+        "summary": "GetAllAcuaponiaSubServers - \r\nObtains all the sub servers the current user has access to",
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/subservers/{subServerId}": {
+      "get": {
+        "tags": [
+          "SubServer"
+        ],
+        "summary": "GetAcuaponiaSubServerInfo - \r\nObtains the information of the sub server associated with subServerId",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "SubServer"
+        ],
+        "summary": "UpdateAcuaponiaSubServerInfo - \r\nUpdates the information of the sub server associated with subServerId",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaSubServerModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaSubServerModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaSubServerModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaSubServerModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/devices": {
+      "get": {
+        "tags": [
+          "SubServerDevice"
+        ],
+        "summary": "GetAllDevices - \r\nObtains the information of all devices related to the sub server associated with subServerId, as long as the user has access to the sub server",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "HardwareType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "UniqueIdHexSHA512",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/devices/{deviceId}": {
+      "patch": {
+        "tags": [
+          "SubServerDevice"
+        ],
+        "summary": "UpdateSubServerDeviceInfo - \r\nUpdates the information of the device associated with deviceId",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerDeviceModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerDeviceModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerDeviceModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerDeviceModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/devices/peripherals": {
+      "get": {
+        "tags": [
+          "SubServerDevicePeripheral"
+        ],
+        "summary": "GetPinActionTypeFormData - Obtains the form information to configure pin action types",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "None": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "InterruptReactionRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledSignaledRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledWrite": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledWriteInverted": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "InterruptReactionWrite": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "Sensor_UltraSonic_HCSR04": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "Sensor_Humiture_DHT11": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "None": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "InterruptReactionRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledSignaledRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledWrite": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledWriteInverted": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "InterruptReactionWrite": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "Sensor_UltraSonic_HCSR04": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "Sensor_Humiture_DHT11": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "None": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "InterruptReactionRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledSignaledRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledWrite": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledWriteInverted": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "InterruptReactionWrite": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "Sensor_UltraSonic_HCSR04": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "Sensor_Humiture_DHT11": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "None": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "InterruptReactionRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledSignaledRead": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledWrite": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "ScheduledWriteInverted": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "InterruptReactionWrite": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "Sensor_UltraSonic_HCSR04": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    },
+                    "Sensor_Humiture_DHT11": {
+                      "$ref": "#/components/schemas/SubServerDeviceConfigPinActionTypeInfo"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SubServerDevicePeripheral"
+        ],
+        "summary": "AddPeripheral - Adds a peripheral to the device associated with the Id in createModel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubServerDevicePeripheralModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubServerDevicePeripheralModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubServerDevicePeripheralModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubServerDevicePeripheralModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/devices/peripherals/{deviceId}": {
+      "get": {
+        "tags": [
+          "SubServerDevicePeripheral"
+        ],
+        "summary": "GetPeripheralsForDevice - Gets the registered peripherals for the device associated with deviceId",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDevicePeripheralView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDevicePeripheralView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDevicePeripheralView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDevicePeripheralView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/devices/peripherals/{deviceId}/{peripheralIndex}": {
+      "patch": {
+        "tags": [
+          "SubServerDevicePeripheral"
+        ],
+        "summary": "UpdatePeripheral - Updates the device peripheral associated with peripheralIndex under the device deviceId",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "peripheralIndex",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerDevicePeripheralModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerDevicePeripheralModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerDevicePeripheralModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerDevicePeripheralModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SubServerDevicePeripheral"
+        ],
+        "summary": "DeletePeripheral - Deletes the device peripheral associated with peripheralIndex under the device deviceId",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "peripheralIndex",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerDeviceView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/subservers/{subServerId}/reactors": {
+      "get": {
+        "tags": [
+          "SubServerReactor"
+        ],
+        "summary": "GetSchemasForAvailableAcuaponiaSubServerReactors - Obtains the configuration schemas of the available reactors for the sub server",
+        "description": "A reactor can be configured multiple times, causing it to be instantiated more than once with each respective configuration",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReactorSchema"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReactorSchema"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReactorSchema"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReactorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/subservers/{subServerId}/reactors/config": {
+      "get": {
+        "tags": [
+          "SubServerReactor"
+        ],
+        "summary": "GetAllAcuaponiaSubServerReactorConfigurations - Obtains the reactor configurations for the sub server",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SubServerReactor"
+        ],
+        "summary": "CreateAcuaponiaSubServerReactorConfiguration - Creates a new configuration for a given reactor for the sub server",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaSubServerReactorConfigurationModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaSubServerReactorConfigurationModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaSubServerReactorConfigurationModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaSubServerReactorConfigurationModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/subservers/{subServerId}/reactors/config/{reactorConfigId}": {
+      "get": {
+        "tags": [
+          "SubServerReactor"
+        ],
+        "summary": "GetAcuaponiaSubServerReactorConfigurationInfo - Obtains the reactor configuration info associated with reactorConfigId",
+        "parameters": [
+          {
+            "name": "reactorConfigId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "SubServerReactor"
+        ],
+        "summary": "UpdateAcuaponiaSubServerReactorConfigurationInfo - Updates the reactor configuration info associated with reactorConfigId",
+        "parameters": [
+          {
+            "name": "reactorConfigId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaSubServerReactorConfigurationModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaSubServerReactorConfigurationModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaSubServerReactorConfigurationModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcuaponiaSubServerReactorConfigurationModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcuaponiaSubServerReactorConfigurationView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/reports": {
+      "get": {
+        "tags": [
+          "SubServerReport"
+        ],
+        "summary": "GetReports - Obtains the available reports",
+        "parameters": [
+          {
+            "name": "SubServer",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Target",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Start",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "End",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "StartDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "EndDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "ManualReportsOnly",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "DeviceReportsOnly",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SubServerReport"
+        ],
+        "summary": "CreateManualSubServerReport - Creates a user made report in the given sub server",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubServerReportModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubServerReportModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubServerReportModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubServerReportModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/reports/{reportId}": {
+      "patch": {
+        "tags": [
+          "SubServerReport"
+        ],
+        "summary": "UpdateSubServerReportInfo - Updates the report information of the report associated with reportId",
+        "description": "This action logs the requesting user as having edited the report",
+        "parameters": [
+          {
+            "name": "reportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Snowflake"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerReportModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerReportModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerReportModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubServerReportModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerReportView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/subservers/sessions/{subServerId}": {
+      "delete": {
+        "tags": [
+          "SubServerSession"
+        ],
+        "summary": "DeleteSubServerSession - Revokes the current session of the sub server associated to subServerId",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "SubServerSession"
+        ],
+        "summary": "GetSubServerSession - Obtains the session information of the sub server associated with subServerId",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerSessionView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerSessionView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerSessionView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerSessionView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/subservers/sessions/{subServerId}/reject": {
+      "patch": {
+        "tags": [
+          "SubServerSession"
+        ],
+        "summary": "RejectSubServerSession - Rejects a pending attempt of the sub server associated with subServerId to create a new session",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/app/subservers/sessions/{subServerId}/approve": {
+      "patch": {
+        "tags": [
+          "SubServerSession"
+        ],
+        "summary": "ApproveSubServerSession - Approves a pending attempt of the sub server associated with subServerId to create a new session",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveSubServerSessionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveSubServerSessionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveSubServerSessionRequest"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveSubServerSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/app/subservers/sessions": {
+      "get": {
+        "tags": [
+          "SubServerSession"
+        ],
+        "summary": "GetSubServerSessions - Obtains the sessions of the sub servers matched by the query",
+        "parameters": [
+          {
+            "name": "Approval",
+            "in": "query",
+            "description": "Where: 0 - Pending Approval, 1 - Approved, -1 - Rejected",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "IsContested",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "IsActivated",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "FirstRequested",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "FirstRequestedDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerSessionView"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerSessionView"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerSessionView"
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubServerSessionView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/permissions/access/user/{userId}": {
+      "get": {
+        "tags": [
+          "SubServerUserAccess"
+        ],
+        "summary": "GetUserAcceses - Obtains the sub servers the given user has access to",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/permissions/access/subserver/{subServerId}": {
+      "get": {
+        "tags": [
+          "SubServerUserAccess"
+        ],
+        "summary": "GetSubServerAccesses - Obtains the users that have access to this sub server",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/permissions/access/{subServerId}/{userId}": {
+      "patch": {
+        "tags": [
+          "SubServerUserAccess"
+        ],
+        "summary": "EditSubServerAccess - Edits the base permissions the user associated with userId has regarding the sub server associated with subServerId",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcuaponiaUserSubServerPermissions"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcuaponiaUserSubServerPermissions"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcuaponiaUserSubServerPermissions"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/AcuaponiaUserSubServerPermissions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SubServerUserAccess"
+        ],
+        "summary": "RevokeSubServerAccess - Revokes any and all permissions and accesses the user associated with userId has regarding the sub server associated with subServerId",
+        "parameters": [
+          {
+            "name": "subServerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/app/permissions/access/access": {
+      "post": {
+        "tags": [
+          "SubServerUserAccess"
+        ],
+        "summary": "GrantSubServerAccess - Grants the given user access in the given sub server with the given permissions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaUserAccessModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaUserAccessModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaUserAccessModel"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcuaponiaUserAccessModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcuaponiaUserAccessView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/notifications": {
+      "get": {
+        "tags": [
+          "UserNotifications"
+        ],
+        "summary": "GetAllNotifications - Obtains all the notifications matched by the query",
+        "parameters": [
+          {
+            "name": "Start",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "StartDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "Category",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/NotificationCategory"
+            }
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/NotificationType"
+            }
+          },
+          {
+            "name": "Importance",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/NotificationImportance"
+            }
+          },
+          {
+            "name": "SubServer",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Seen",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Skip",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Take",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserNotificationView"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserNotificationView"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserNotificationView"
+                  }
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserNotificationView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "UserNotifications"
+        ],
+        "summary": "MarkAsSeen - Marks each notification associated to each respective id in notifications as having been seen by the user",
+        "description": "If any one notification fails to be marked as seen by the user, the entire operation is rolled back",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Snowflake"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Snowflake"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Snowflake"
+                }
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Snowflake"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserNotificationView"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserNotificationView"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserNotificationView"
+                  }
+                }
+              },
+              "application/x-msgpack": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserNotificationView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/permissions/{otherUserId}": {
+      "patch": {
+        "tags": [
+          "UserPermissions"
+        ],
+        "summary": "AdjustUserPermissions - Modifies the base general permissions the user has",
+        "parameters": [
+          {
+            "name": "otherUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcuaponiaUserGlobalPermissions"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcuaponiaUserGlobalPermissions"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcuaponiaUserGlobalPermissions"
+              }
+            },
+            "application/x-msgpack": {
+              "schema": {
+                "$ref": "#/components/schemas/AcuaponiaUserGlobalPermissions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AcuaponiaSubServerReactorConfigurationView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "subServerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reactorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "jsonConfiguration": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AcuaponiaSubServerView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastHeartbeat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "devices": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AcuaponiaUserAccessView": {
+        "type": "object",
+        "properties": {
+          "acuaponiaUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "subServerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "basePermissions": {
+            "$ref": "#/components/schemas/AcuaponiaUserSubServerPermissions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AcuaponiaUserGlobalPermissions": {
+        "enum": [
+          0,
+          1,
+          5,
+          8,
+          24,
+          32,
+          64,
+          128,
+          384,
+          512,
+          1536
+        ],
+        "type": "integer",
+        "format": "int64"
+      },
+      "AcuaponiaUserSubServerPermissions": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int64"
+      },
+      "AcuaponiaUserView": {
+        "type": "object",
+        "properties": {
+          "realName": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailMD5": {
+            "type": "string",
+            "nullable": true
+          },
+          "baseGlobalPermissions": {
+            "$ref": "#/components/schemas/AcuaponiaUserGlobalPermissions"
+          },
+          "accesses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuidGuidValueTuple"
+            },
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApproveSubServerSessionRequest": {
+        "type": "object",
+        "properties": {
+          "requesterIPAddress": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangeAcuaponiaUserPasswordModel": {
+        "type": "object",
+        "properties": {
+          "oldPasswordSHA256": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateAcuaponiaSubServerReactorConfigurationModel": {
+        "type": "object",
+        "properties": {
+          "subServerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reactorName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateAcuaponiaUserAccessModel": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "subServerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "basePermissions": {
+            "$ref": "#/components/schemas/AcuaponiaUserSubServerPermissions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateAcuaponiaUserModel": {
+        "type": "object",
+        "properties": {
+          "realName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateFirmwareDataModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firmwareGroup": {
+            "type": "string",
+            "nullable": true
+          },
+          "pinActionTypeSupport": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PinActionType"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateSubServerDevicePeripheralModel": {
+        "type": "object",
+        "properties": {
+          "subServerDeviceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pins": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionType": {
+            "$ref": "#/components/schemas/PinActionType"
+          },
+          "scheduledDelay": {
+            "type": "string",
+            "format": "date-span",
+            "nullable": true
+          },
+          "reportValueKind": {
+            "$ref": "#/components/schemas/ReportValueKind"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateSubServerReportModel": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dateRecorded": {
+            "type": "string",
+            "nullable": true
+          },
+          "deviceIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeviceHardwareArchitecture": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int64"
+      },
+      "DeviceHardwareFeatures": {
+        "enum": [
+          1,
+          2,
+          4,
+          8,
+          16
+        ],
+        "type": "integer",
+        "format": "int64"
+      },
+      "DoubleUpdateNullableStruct": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EditActionKind": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "FirmwareDataView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firmwareGroup": {
+            "type": "string",
+            "nullable": true
+          },
+          "binaryUploadedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "requiredFeatures": {
+            "$ref": "#/components/schemas/DeviceHardwareFeatures"
+          },
+          "supportedFeatures": {
+            "$ref": "#/components/schemas/DeviceHardwareFeatures"
+          },
+          "compiledFor": {
+            "$ref": "#/components/schemas/DeviceHardwareArchitecture"
+          },
+          "assignedDevices": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "pinActionTypeSupport": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PinActionType"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GuidGuidValueTuple": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "GuidUpdateNullableStruct": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Int32EditAction": {
+        "type": "object",
+        "properties": {
+          "actionKind": {
+            "$ref": "#/components/schemas/EditActionKind"
+          },
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginAcuaponiaUserModel": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "passwordSHA256": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NotificationCategory": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "NotificationContentFormat": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "NotificationImportance": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "NotificationType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "PinActionType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          100,
+          101
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "PinActionTypeEditAction": {
+        "type": "object",
+        "properties": {
+          "actionKind": {
+            "$ref": "#/components/schemas/EditActionKind"
+          },
+          "value": {
+            "$ref": "#/components/schemas/PinActionType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PinActionTypePinFieldInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "fieldType": {
+            "$ref": "#/components/schemas/PinFieldType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PinActionTypeUpdateNullableStruct": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/PinActionType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PinFieldType": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "ReactorProperty": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "subProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReactorProperty"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReactorSchema": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReactorProperty"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReportValueKind": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "type": "integer",
+        "format": "int64"
+      },
+      "Snowflake": {
+        "type": "object",
+        "properties": {
+          "timeStamp": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "machineId": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubServerDeviceConfigPinActionTypeInfo": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PinActionTypePinFieldInfo"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubServerDeviceEmbeddedView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "hardwareType": {
+            "type": "string",
+            "nullable": true
+          },
+          "hardwareFeatures": {
+            "$ref": "#/components/schemas/DeviceHardwareFeatures"
+          },
+          "hardwareArchitecture": {
+            "$ref": "#/components/schemas/DeviceHardwareArchitecture"
+          },
+          "connectionType": {
+            "type": "string",
+            "nullable": true
+          },
+          "connectionSlot": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignedFirmwareId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "ownerSubServerId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubServerDevicePeripheralEmbeddedView": {
+        "type": "object",
+        "properties": {
+          "subServerDeviceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionType": {
+            "$ref": "#/components/schemas/PinActionType"
+          },
+          "scheduledDelay": {
+            "type": "string",
+            "format": "date-span",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubServerDevicePeripheralView": {
+        "required": [
+          "reportValueKind"
+        ],
+        "type": "object",
+        "properties": {
+          "subServerDeviceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subServerDevice": {
+            "$ref": "#/components/schemas/SubServerDeviceEmbeddedView"
+          },
+          "pins": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionType": {
+            "$ref": "#/components/schemas/PinActionType"
+          },
+          "scheduledDelay": {
+            "type": "string",
+            "format": "date-span",
+            "nullable": true
+          },
+          "reportValueKind": {
+            "$ref": "#/components/schemas/ReportValueKind"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubServerDeviceView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uniqueIdHexSHA512": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "hardwareType": {
+            "type": "string",
+            "nullable": true
+          },
+          "hardwareFeatures": {
+            "$ref": "#/components/schemas/DeviceHardwareFeatures"
+          },
+          "hardwareArchitecture": {
+            "$ref": "#/components/schemas/DeviceHardwareArchitecture"
+          },
+          "connectionType": {
+            "type": "string",
+            "nullable": true
+          },
+          "connectionSlot": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignedFirmwareId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "ownerSubServerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lastHeartbeat": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubServerReportView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Snowflake"
+          },
+          "reporterUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "deviceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "subServerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dateRecorded": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deviceIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "devicePeripheral": {
+            "$ref": "#/components/schemas/SubServerDevicePeripheralEmbeddedView"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "manuallyReported": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubServerSessionView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "givenName": {
+            "type": "string",
+            "nullable": true
+          },
+          "reportedName": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstRequestedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastLoginDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "requestingClientIP": {
+            "type": "string",
+            "nullable": true
+          },
+          "requestingClientReportedMACAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "isApproved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isActivated": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TimeSpanUpdateNullableStruct": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date-span"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateAcuaponiaSubServerModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateAcuaponiaSubServerReactorConfigurationModel": {
+        "type": "object",
+        "properties": {
+          "jsonConfiguration": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateAcuaponiaUserModel": {
+        "type": "object",
+        "properties": {
+          "realName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateFirmwareDataModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "firmwareGroup": {
+            "type": "string",
+            "nullable": true
+          },
+          "requiredFeatures": {
+            "$ref": "#/components/schemas/DeviceHardwareFeatures"
+          },
+          "supportedFeatures": {
+            "$ref": "#/components/schemas/DeviceHardwareFeatures"
+          },
+          "compiledFor": {
+            "$ref": "#/components/schemas/DeviceHardwareArchitecture"
+          },
+          "pinActionTypeSupport": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PinActionTypeEditAction"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateSubServerDeviceModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "hardwareType": {
+            "type": "string",
+            "nullable": true
+          },
+          "hardwareFeatures": {
+            "$ref": "#/components/schemas/DeviceHardwareFeatures"
+          },
+          "hardwareArchitecture": {
+            "$ref": "#/components/schemas/DeviceHardwareArchitecture"
+          },
+          "connectionType": {
+            "type": "string",
+            "nullable": true
+          },
+          "connectionSlot": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignedFirmwareId": {
+            "$ref": "#/components/schemas/GuidUpdateNullableStruct"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateSubServerDevicePeripheralModel": {
+        "type": "object",
+        "properties": {
+          "pins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int32EditAction"
+            },
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionType": {
+            "$ref": "#/components/schemas/PinActionTypeUpdateNullableStruct"
+          },
+          "scheduledDelay": {
+            "$ref": "#/components/schemas/TimeSpanUpdateNullableStruct"
+          },
+          "reportValueKind": {
+            "$ref": "#/components/schemas/ReportValueKind"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateSubServerReportModel": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/DoubleUpdateNullableStruct"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserNotificationView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Snowflake"
+          },
+          "subServerId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "contentFormat": {
+            "$ref": "#/components/schemas/NotificationContentFormat"
+          },
+          "redirectRelativeUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "$ref": "#/components/schemas/NotificationCategory"
+          },
+          "type": {
+            "$ref": "#/components/schemas/NotificationType"
+          },
+          "importance": {
+            "$ref": "#/components/schemas/NotificationImportance"
+          },
+          "notificationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateSeen": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "seen": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "SubServerJWT": {
+        "type": "http",
+        "description": "Please log in using the SubServer Identity Controller",
+        "scheme": "Bearer"
+      },
+      "UserToken;User-OAuth": {
+        "type": "apiKey",
+        "description": "Please log in using the User Identity Controller",
+        "name": "User Services Session Key",
+        "in": "header"
+      }
+    }
+  }
+}
