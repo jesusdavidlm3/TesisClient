@@ -11,9 +11,15 @@ class newPeripheralInfo{
 	}
 }
 
-/*class peripheralNewInfo{
-	constructor(pins, )
-}*/
+class peripheralNewInfo{
+	constructor(pins, name, actionType, scheduledDelay, reportValueKind){
+		this.pins = pins
+		this.name = name
+		this.actionType = actionType
+		this.scheduledDelay = scheduledDelay
+		this.reportValueKind = reportValueKind
+	}
+}
 
 //Modulo subServerDevicePeripheral
 

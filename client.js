@@ -9,25 +9,12 @@ import { mainServerClientSubServerReactorModule } from "./Modules/subServerReact
 import { mainServerClientSubServerReportModule } from "./Modules/subServerReportModule.js"
 import { mainServerClientSubServerSessionModule } from "./Modules/subServerSessionModule.js"
 import { mainServerClientSubServerUserAccessModule } from "./Modules/subServerUserAccessModule.js"
+import { mainServerClientUserNotificationsModule } from "./Modules/userNotificationModule.js"
+import { mainServerClientUserPermissionsModule } from "./Modules/userPermissionModule.js"
 
 
 
 
-//Modulos
-
-
-
-
-
-class mainServerClientUserPermissionsModule{
-	constructor(mainServerClient){
-		mainServerClient: this.mainServerClient
-	}
-
-	adjustUserPermissions(otherUserId){		//no se si esto lleva data o que
-		return this.mainServerClient.httpPatch(`api/app/permissions/${otherUserId}`)
-	}
-}
 
 
 //main

@@ -1,3 +1,20 @@
+//Modelo para subServerReport
+
+class newReport{
+	constructor(deviceId, dateRecorded, deviceIndex, value){
+		this.deviceId = deviceId
+		this.dateRecorded = dateRecorded
+		this.deviceIndex = deviceIndex
+		this.value = value
+	}
+}
+
+class reportNewInfo{
+	constructor(value){
+		this.value = value
+	}
+}
+
 //Modulo Report
 
 export class mainServerClientSubServerReportModule{

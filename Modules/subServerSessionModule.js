@@ -1,3 +1,12 @@
+//Modelo de SubServerSession
+
+class approveSubServerSession{
+	constructor(requesterIPAddress){
+		this.requesterIPAddress = requesterIPAddress
+	}
+}
+
+
 //Modulo Session
 
 export class mainServerClientSubServerSessionModule{

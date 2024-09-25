@@ -1,3 +1,19 @@
+//Modelos para Reactor
+
+class newReactor{
+	constructor(subserverId, reactorName){
+		this.subserverId = subserverId
+		this.reactorName = reactorName
+	}
+}
+
+class reactorNewInfo{
+	constructor(jsonConfiguration){
+		this.jsonConfiguration = jsonConfiguration
+	}
+}
+
+
 //Modulo Reactor
 
 export class mainServerClientSubServerReactorModule{
